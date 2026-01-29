@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mission: Prachi Mam</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Poppins,sans-serif;
+}
+body{
+  background:#020617;
+  color:white;
+  overflow:hidden;
+}
+
+/* Animated Gradient Background */
+.bg{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(120deg,#020617,#1e293b,#020617);
+  background-size:200% 200%;
+  animation:bgMove 12s infinite alternate;
+  z-index:-2;
+}
+@keyframes bgMove{
+  0%{background-position:0% 50%;}
+  100%{background-position:100% 50%;}
+}
+
+/* Floating Hearts */
+.heart{
+  position:absolute;
+  bottom:-20px;
+  font-size:18px;
+  animation:floatUp linear infinite;
+}
+@keyframes floatUp{
+  0%{transform:translateY(0);opacity:1;}
+  100%{transform:translateY(-120vh);opacity:0;}
+}
+
+/* Layout */
+.wrapper{
+  width:100%;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* Glass Card */
+.card{
+  width:90%;
+  max-width:720px;
+  padding:35px 40px;
+  border-radius:26px;
+  background:rgba(255,255,255,0.07);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,0.12);
+  box-shadow:0 0 50px rgba(0,0,0,0.6);
+  text-align:center;
+  animation:fadeIn .7s ease;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:scale(.92);}
+  to{opacity:1;transform:scale(1);}
+}
+
+/* Progress Bar */
+.progress{
+  width:100%;
+  height:6px;
+  background:#1e293b;
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:18px;
+}
+.bar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#ec4899,#8b5cf6);
+  transition:.5s;
+}
+
+/* Cartoon Icon */
+.icon{
+  font-size:72px;
+  margin-bottom:10px;
+  animation:bounce 2s infinite;
+}
+@keyframes bounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-12px);}
+}
+
+/* Her Photo */
+.photo-box{
+  width:140px;
+  height:140px;
+  margin:12px auto;
+  border-radius:50%;
+  overflow:hidden;
+  border:4px solid #ec4899;
+  box-shadow:0 0 25px rgba(236,72,153,0.6);
+  animation:photoGlow 2s infinite alternate;
+}
+.photo-box img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+@keyframes photoGlow{
+  from{transform:scale(1);}
+  to{transform:scale(1.05);}
+}
+
+/* Text */
+.title{
+  font-size:28px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+.text{
+  font-size:17px;
+  opacity:.9;
+}
+.highlight{
+  background:linear-gradient(135deg,#ec4899,#8b5cf6);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+/* Buttons */
+.btn{
+  margin-top:22px;
+  padding:12px 32px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(135deg,#ec4899,#8b5cf6);
+  color:white;
+  font-size:15px;
+  cursor:pointer;
+  transition:.25s;
+}
+.btn:hover{transform:scale(1.08);}
+
+.btns{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+}
+.yes{background:linear-gradient(135deg,#22c55e,#16a34a);}
+.no{background:linear-gradient(135deg,#64748b,#475569);}
+
+/* Popup */
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+.popup-card{
+  background:linear-gradient(135deg,#020617,#1e293b);
+  padding:40px 45px;
+  border-radius:26px;
+  text-align:center;
+  box-shadow:0 0 50px rgba(236,72,153,.6);
+  animation:pop .6s ease;
+}
+@keyframes pop{
+  from{transform:scale(.5);opacity:0;}
+  to{transform:scale(1);opacity:1;}
+}
+.popup-card h1{font-size:30px;margin-bottom:12px;}
+.popup-card p{font-size:16px;margin:6px 0;opacity:.9;}
+.popup-card button{margin-top:20px;}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="wrapper">
+  <div class="card" id="app"></div>
+</div>
+
+<!-- Popup -->
+<div class="popup" id="popup">
+  <div class="popup-card">
+    <h1>💖 Mission Successful</h1>
+    <p>Thank you, <span class="highlight">Prachi Mam</span> ✨</p>
+    <p>You just made a fresher's day unforgettable 😊</p>
+    <p>See you at the freshers party 🎉</p>
+    <button class="btn" onclick="closePopup()">Close 💫</button>
+  </div>
+</div>
+
+<script>
+/* STORY WITH COMPLIMENTS + PHOTO */
+const scenes = [
+  {text:"Mission Activated", icon:"🕵️‍♂️"},
+  {text:"Target identified: Prachi Mam", icon:"🎯"},
+  {text:"Scanning college system...", icon:"💻"},
+  {text:"Perfect match found ✨", icon:"🌟", showPhoto:true},
+
+  {text:"Among hundreds of seniors...", icon:"🏫"},
+  {text:"One person felt different", icon:"👀", showPhoto:true},
+
+  {text:"You have a calm and positive vibe", icon:"🌸"},
+  {text:"Your smile makes everything lighter", icon:"😊", showPhoto:true},
+  {text:"You carry confidence without arrogance", icon:"👑"},
+  {text:"Your personality feels genuine and rare", icon:"💎"},
+  {text:"People feel comfortable around you", icon:"🤍"},
+  {text:"You stand out without trying too hard", icon:"✨", showPhoto:true},
+
+  {text:"Some people are loud...", icon:"🔊"},
+  {text:"Some people are popular...", icon:"⭐"},
+  {text:"But some people are unforgettable", icon:"💫"},
+  {text:"And you are one of them, Prachi Mam", icon:"💖", showPhoto:true},
+
+  {text:"Freshers party is about memories, not just events.It’s about sharing those moments with someone who truly matters.", icon:"🎶"},
+  {text:"Memories are better with the right person", icon:"💭"},
+  {text:"What if that person is you?", icon:"💌", showPhoto:true},
+
+  {text:"Moment of truth 💌", icon:"💍"}
+];
+
+let index = 0;
+const app = document.getElementById("app");
+
+function renderScene(){
+  const total = scenes.length;
+  const percent = Math.floor(((index+1)/total)*100);
+  const scene = scenes[index];
+
+  app.innerHTML = `
+    <div class="progress"><div class="bar" style="width:${percent}%"></div></div>
+    <div class="icon">${scene.icon}</div>
+    ${scene.showPhoto ? `<div class="photo-box"><img src="her1.jpg"></div>` : ""}
+    <div class="title">${scene.text}</div>
+  `;
+
+  if(index === total-1){
+    const q = document.createElement("div");
+    q.className="text";
+    q.innerHTML="Will you go with me to the freshers party?";
+    app.appendChild(q);
+
+    const btnBox = document.createElement("div");
+    btnBox.className="btns";
+
+    const yesBtn = document.createElement("button");
+    yesBtn.className="btn yes";
+    yesBtn.innerText="Yes 🎉";
+    yesBtn.onclick=showPopup;
+
+    const noBtn = document.createElement("button");
+    noBtn.className="btn no";
+    noBtn.innerText="No 😅";
+    noBtn.id="noBtn";
+
+    btnBox.appendChild(yesBtn);
+    btnBox.appendChild(noBtn);
+    app.appendChild(btnBox);
+
+    runawayNo();
+    return;
+  }
+
+  const nextBtn = document.createElement("button");
+  nextBtn.className="btn";
+  nextBtn.innerText="Next ➡";
+  nextBtn.onclick=()=>{
+    index++;
+    renderScene();
+  };
+  app.appendChild(nextBtn);
+}
+
+function showPopup(){
+  document.getElementById("popup").style.display="flex";
+}
+function closePopup(){
+  document.getElementById("popup").style.display="none";
+}
+
+/* No button runaway 😈 */
+function runawayNo(){
+  const noBtn = document.getElementById("noBtn");
+  noBtn.addEventListener("mouseover",()=>{
+    noBtn.style.position="absolute";
+    noBtn.style.left=Math.random()*70+"%";
+    noBtn.style.top=Math.random()*70+"%";
+  });
+}
+
+/* Floating hearts */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💖";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(4+Math.random()*3)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),7000);
+},400);
+
+renderScene();
+</script>
+
+</body>
+</html>
